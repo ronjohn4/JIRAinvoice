@@ -13,10 +13,8 @@
     <hr>
     <div class="table">
         <div class="headerrow">
-            <div class="cell">Customer</div>
-            <div class="cell">Type</div>
+            <div class="cell">Epic</div>
             <div class="cell">Status</div>
-            <div class="cell">Key</div>
             <div class="cell" align="right">Hours</div>
             <div class="cellwrap">Summary</div>
         </div>
@@ -24,12 +22,10 @@
         {% if entries|length > 0 %}
             {% for entry in entries %}
                 <div class="row">
-                    <div class="cell">{{entry.customer}}</div>
-                    <div class="cell">{{entry.issuetype}}</div>
-                    <div class="cell">{{entry.status}}</div>
-                    <div class="cell"><a href="{{ url_for('issues') }}{{entry.key}}">{{entry.key}}</a></div>
-                    <div class="cell" align="right">{{'{0:0.2f}'.format(entry.totaltimeSpentSeconds / 3600)}}</div>
-                    <div class="cellwrap">{{entry.summary}}</div>
+                    <div class="cell"><a href="{{ url_for('issues') }}{{entry.epickey}}">{{entry.epickey}}</a></div>
+                    <div class="cell">{{entry.epicstatus}}</div>
+                    <div class="cell" align="right">{{'{0:0.2f}'.format(entry.epictime / 3600)}}</div>
+                    <div class="cellwrap">{{entry.epicsummary}}</div>
                 </div>
             {% endfor %}
             </div>

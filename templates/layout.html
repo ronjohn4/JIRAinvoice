@@ -1,10 +1,10 @@
 <!doctype html>
-<title>WFD Time - {% block title %}{% endblock %}</title>
+<title>ABC Invoice - {% block title %}{% endblock %}</title>
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
 <div class=page>
-    <h1>WFD Time</h1>
+    <h1>ABC Invoice</h1>
 
-    <b>Hours from Tempo and Tickets from JIRA, then summarizes by JIRA ticket....it takes a minute</b>
+    <b>Hours from Tempo and Tickets from JIRA, then summarizes by JIRA ticket then epic....it takes a minute</b>
     <br>
     {% for message in get_flashed_messages() %}
         <div class=flash>{{ message }}</div>
