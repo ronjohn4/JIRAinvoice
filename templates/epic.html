@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block title %}Tempo Detail{% endblock %}
+{% block title %}Epic Detail{% endblock %}
 {% block body %}
     <a href="{{ url_for('issues') }}">Home</a>
     {% if time_list[0].epickey != None %}
@@ -10,9 +10,10 @@
     <h2>Epic</h2>
     <table class="pairvalues">
       <tr><td>Epic Key:</td><td>{{time_list[0].epickey or '-'}}</td></tr>
-      <tr><td>Epic Summary:</td><td>{{time_list[0].epicsummary or '-'}}</td></tr>
-      <tr><td>Epic Status:</td><td>{{time_list[0].epicstatus or '-'}}</td></tr>
-      <tr><td>Epic Billable:</td><td>{{time_list[0].epicbillable or '-'}}</td></tr>
+      <tr><td>Epic Summary:</td><td>{{time_list[0].epicsummary or ''}}</td></tr>
+      <tr><td>Epic Status:</td><td>{{time_list[0].epicstatus or ''}}</td></tr>
+      <tr><td>Epic Version:</td><td>{{time_list[0].epicfixversion or ''}}</td></tr>
+      <tr><td>Epic Billable:</td><td>{{time_list[0].epicbillable or ''}}</td></tr>
       <tr><td>Total Time Spent:</td><td>{{'{0:0.2f}'.format(time_list[0].epictime / 3600) or '-'}}
           (not minutes, a fraction of an hour)</td></tr>
     </table>
@@ -21,19 +22,21 @@
     <h2>Tempo time entries</h2>
     <div class="table">
         <div class="headerrow">
-            <div class="cell">Sub Key</div>
-            <div class="cell">Story Key</div>
-            <div class="cell">Epic Key</div>
             <div class="cell" align="right">Hours</div>
+            <div class="cell">Story Key</div>
+            <div class="cell">Sub Key</div>
+            <div class="cell">Sub Version</div>
+            <div class="cell">Sub Summary</div>
             <div class="cellwrap">Tempo Comment</div>
         </div>
         {% if time_list|length > 0 %}
             {% for entry in time_list %}
                 <div class="row">
-                    <div class="cell">{{entry.subkey or '-'}}</div>
-                    <div class="cell">{{entry.storykey or '-'}}</div>
-                    <div class="cell">{{entry.epickey or '-'}}</div>
                     <div class="cell" align="right">{{'{0:0.2f}'.format(entry.tempotime / 3600)}}</div>
+                    <div class="cell">{{entry.storykey or ''}}</div>
+                    <div class="cell">{{entry.subkey or ''}}</div>
+                    <div class="cellwrap">{{entry.subfixversion or ''}}</div>
+                    <div class="cellwrap">{{entry.subsummary or ''}}</div>
                     <div class="cellwrap">{{entry.tempocomment}}</div>
                 </div>
             {% endfor %}

@@ -1,17 +1,18 @@
 {% extends "layout.html" %}
-{% block title %}Tempo Detail{% endblock %}
+{% block title %}Story Detail{% endblock %}
 {% block body %}
     <a href="{{ url_for('issues') }}">Home</a>
-    {% if time_list[0].epickey != None %}
+    {% if time_list[0].storykey != None %}
         | <a href="https://levelsbeyond.atlassian.net/browse/{{time_list[0].storykey}}" target="_blank">JIRA</a>
     {% endif %}
 
     <hr>
-    <h2>Epic</h2>
+    <h2>Story</h2>
     <table class="pairvalues">
-      <tr><td>Epic Key:</td><td>{{time_list[0].storykey or '-'}}</td></tr>
-      <tr><td>Epic Summary:</td><td>{{time_list[0].storysummary or ''}}</td></tr>
-      <tr><td>Epic Status:</td><td>{{time_list[0].storystatus or ''}}</td></tr>
+      <tr><td>Story Key:</td><td>{{time_list[0].storykey or '-'}}</td></tr>
+      <tr><td>Story Summary:</td><td>{{time_list[0].storysummary or ''}}</td></tr>
+      <tr><td>Story Status:</td><td>{{time_list[0].storystatus or ''}}</td></tr>
+      <tr><td>Story Version:</td><td>{{time_list[0].storyfixversion or ''}}</td></tr>
       <tr><td>Total Time Spent:</td><td>{{'{0:0.2f}'.format(time_list[0].storytime / 3600) or '-'}}
           (not minutes, a fraction of an hour)</td></tr>
     </table>
@@ -21,17 +22,17 @@
     <div class="table">
         <div class="headerrow">
             <div class="cell" align="right">Hours</div>
-            <div class="cell">Story Key</div>
-            <div class="cell">Sub Key</div>
+            <div class="cell">Sub Task</div>
+            <div class="cell">Sub Version</div>
             <div class="cell">Sub Summary</div>
-            <div class="cellwrap">Tempo Comment</div>
+            <div class="cell">Tempo Comment</div>
         </div>
         {% if time_list|length > 0 %}
             {% for entry in time_list %}
                 <div class="row">
                     <div class="cell" align="right">{{'{0:0.2f}'.format(entry.tempotime / 3600)}}</div>
-                    <div class="cell">{{entry.storykey or ''}}</div>
                     <div class="cell">{{entry.subkey or ''}}</div>
+                    <div class="cellwrap">{{entry.subfixversion or ''}}</div>
                     <div class="cellwrap">{{entry.subsummary or ''}}</div>
                     <div class="cellwrap">{{entry.tempocomment}}</div>
                 </div>

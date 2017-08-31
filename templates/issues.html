@@ -1,13 +1,15 @@
 <!--Todo - html5 date controls don't display default date on first render-->
 {% extends "layout.html" %}
-{% block title %}JIRA List{% endblock %}
+{% block title %}{% endblock %}
 {% block body %}
     <a href="#" onclick="document.searchform.submit();return false;">search</a>
     <form name=searchform class=searchform action="{{ url_for('issues') }}" method=post style="display: inline;">
         <input type="date" name="startdate" value="{{search.startdate}}"/> -
         <input type="date" name="enddate" value="{{search.enddate}}"/>
-    </form> |
-    <a href="{{ url_for('issuescsv') }}" xmlns="http://www.w3.org/1999/html">csv</a>
+    </form>
+    {% if epics|length > 0 or stories|length > 0 %}
+        |  <a href="{{ url_for('issuescsv') }}" xmlns="http://www.w3.org/1999/html">csv</a>
+    {% endif %}
     <hr>
     Total Hours: {{"%0.2f" % (total_hours / 3600)|float}}
     <hr>
@@ -16,22 +18,41 @@
             <div class="cell">Epic</div>
             <div class="cell">Status</div>
             <div class="cell" align="right">Hours</div>
+            <div class="cell">Version</div>
             <div class="cellwrap">Summary</div>
         </div>
 
-        {% if entries|length > 0 %}
-            {% for entry in entries %}
+        {% if epics|length > 0 %}
+            {% for epic in epics %}
                 <div class="row">
-                    <div class="cell"><a href="{{ url_for('issues') }}{{entry.epickey}}">{{entry.epickey}}</a></div>
-                    <div class="cell">{{entry.epicstatus}}</div>
-                    <div class="cell" align="right">{{'{0:0.2f}'.format(entry.epictime / 3600)}}</div>
-                    <div class="cellwrap">{{entry.epicsummary}}</div>
+                    <div class="cell"><a href="{{ url_for('epic', id=epic.epickey) }}">{{epic.epickey}}</a></div>
+                    <div class="cell">{{epic.epicstatus}}</div>
+                    <div class="cell" align="right">{{'{0:0.2f}'.format(epic.epictime / 3600)}}</div>
+                    <div class="cell">{{epic.epicfixversion}}</div>
+                    <div class="cellwrap">{{epic.epicsummary}}</div>
                 </div>
             {% endfor %}
-            </div>
-        {% else %}
-            </div>
-            No time entered in the date range.
         {% endif %}
+
+        <div class="headerrow">
+            <div class="cell">Non-Epic</div>
+            <div class="cell">Status</div>
+            <div class="cell" align="right">Hours</div>
+            <div class="cell">Version</div>
+            <div class="cellwrap">Summary</div>
+        </div>
+
+        {% if stories|length > 0 %}
+            {% for story in stories %}
+                <div class="row">
+                    <div class="cell"><a href="{{ url_for('story', id=story.storykey) }}">{{story.storykey}}</a></div>
+                    <div class="cell">{{story.storystatus}}</div>
+                    <div class="cell" align="right">{{'{0:0.2f}'.format(story.storytime / 3600)}}</div>
+                    <div class="cell">{{story.storyfixversion}}</div>
+                    <div class="cellwrap">{{story.storysummary}}</div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
 
 {% endblock %}
