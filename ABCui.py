@@ -43,11 +43,13 @@ def issuescsv():
                        is not None and v['epickey'] is None}.values())
 
     for v in epic_list:
-        csv_list.append({'key': v['epickey'], 'status': v['epicstatus'], 'Hours': v['epictime'],
+        csv_list.append({'key': v['epickey'], 'status': v['epicstatus'],
+                         'Hours': '{0:.2f}'.format(v['epictime']/3600),
                          'Version': v['epicfixversion'], 'Summary': v['epicsummary'], 'issuetype': 'Epic'})
 
     for v in story_list:
-        csv_list.append({'key': v['storykey'], 'status': v['storystatus'], 'Hours': v['storytime'],
+        csv_list.append({'key': v['storykey'], 'status': v['storystatus'],
+                         'Hours': '{0:.2f}'.format(v['storytime']/3600),
                          'Version': v['storyfixversion'], 'Summary': v['storysummary'], 'issuetype': 'Story'})
 
     keys = csv_list[0].keys()
