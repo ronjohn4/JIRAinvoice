@@ -3,9 +3,16 @@ import json
 from timeit import default_timer as timer
 import logging
 
+# todo - add user authentication (against JIRA)
+# todo - run from Apache (wsgi?)
+# todo - link to Jira using an icon next to the Jira ID
+
 # Set to True to run offline.
 _offline = False
 tempo_list = {}
+
+s = requests.session()
+s.auth = ('rjohnson', 'Miter9le')
 
 
 def LoadJira():
@@ -23,7 +30,7 @@ def LoadJira():
         url = jira_url.format(keylist)
         # print('url:', url)
 
-        r = requests.get(url, auth=GetAuth())
+        r = s.get(url)
         json_return = json.loads(r.text)
         json_return = json_return['issues']
 
@@ -47,7 +54,7 @@ def LoadJira():
         url = jira_url.format(keylist)
         # print('url:', url)
 
-        r = requests.get(url, auth=GetAuth())
+        r = s.get(url)
         json_return = json.loads(r.text)
         json_return = json_return['issues']
 
@@ -71,7 +78,7 @@ def LoadJira():
         url = jira_url.format(keylist)
         # print('url:', url)
 
-        r = requests.get(url, auth=GetAuth())
+        r = s.get(url)
         json_return = json.loads(r.text)
         json_return = json_return['issues']
 
@@ -99,7 +106,8 @@ def LoadTempo(projectKey, fromDate, toDate):
         url = tempo_url.format(fromDate, toDate, projectKey)
         logging.debug('tempo_url: {0}'.format(url))
 
-        r = requests.get(url, auth=GetAuth())
+        r = s.get(url)
+
         logging.debug('return status: {0}'.format(r.status_code))
 
         if r.status_code == 200:
@@ -183,10 +191,6 @@ def HrsGet(projectKey, fromDate, toDate):
         return_list.append(v)
 
     return [return_list, total_hours]
-
-
-def GetAuth():
-    return ('rjohnson', 'Miter9le')
 
 
 def SetMockData():
