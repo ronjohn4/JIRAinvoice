@@ -5,8 +5,8 @@
 # todo - run from Apache (wsgi?)
 # todo - link to Jira using an icon next to the Jira ID
 
-from flask import Flask, render_template, flash, request, make_response
-from ABCdata import HrsGet
+from flask import Flask, render_template, flash, request, make_response, redirect, url_for
+from jiratempo import HrsGet
 import io
 import csv
 import logging
@@ -14,7 +14,7 @@ from datetime import datetime
 import calendar
 
 app = Flask('JIRAhrs')
-
+app.config['JIRAroot'] = 'https://levelsbeyond.atlassian.net'
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -107,6 +107,32 @@ def epic(id=None):
     if id == 'None':
         id = None
     return render_template('epic.html', time_list=[v for v in time_list if v['epickey'] == id])
+
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        if request.form['username'] != 'admin' or request.form['password'] != 'admin':
+            error = 'Invalid Credentials. Please try again.'
+        else:
+            return redirect(url_for('issues'))
+    return render_template('login.html', error=error)
+
+
+@app.route('/logout')
+def logout():
+
+    error = None
+
+    if request.method == 'POST':
+        if request.form['username'] != 'admin' or request.form['password'] != 'admin':
+            error = 'Invalid Credentials. Please try again.'
+        else:
+            return redirect(url_for('issues'))
+    return render_template('login.html', error=error)
+
 
 
 if __name__ == '__main__':
