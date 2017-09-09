@@ -3,7 +3,7 @@
 {% block body %}
     <a href="{{ url_for('issues') }}">Home</a>
     {% if time_list[0].epickey != None %}
-        | <a href="https://levelsbeyond.atlassian.net/browse/{{time_list[0].epickey}}" target="_blank">JIRA</a>
+        | <a href="{{config.JIRAroot}}/browse/{{time_list[0].epickey}}" target="_blank">JIRA</a>
     {% endif %}
 
     <hr>
