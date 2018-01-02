@@ -1,38 +1,59 @@
 #!/usr/bin/python
 # -*- coding: UTF-8 -*-# enable debugging
 
-# todo - add user authentication (against JIRA)
-# todo - run from Apache (wsgi?)
 # todo - link to Jira using an icon next to the Jira ID
 
-from flask import Flask, render_template, flash, request, make_response, redirect, url_for
-from jiratempo import HrsGet
+from flask import Flask, render_template, flash, request, make_response, redirect, url_for, session
 import io
+from functools import wraps
 import csv
 import logging
 from datetime import datetime
 import calendar
+from JIRAhandlerinvoice import JIRAhandlerinvoice
 
-app = Flask('JIRAhrs')
-app.config['JIRAroot'] = 'https://levelsbeyond.atlassian.net'
+JIRA_BASE_URL = 'https://levelsbeyond.atlassian.net'
+
+app = Flask('JIRAinvoice')
+jira_handle = JIRAhandlerinvoice(JIRA_BASE_URL)
+
+# secret_key is used for flash messages
+app.config.update(dict(
+    SECRET_KEY='development key goes here, should be complex',
+    JIRAroot=JIRA_BASE_URL
+))
+
 
 logging.basicConfig(level=logging.DEBUG)
 
 today = datetime.today()
+last_month = today.month-1 if today.month > 1 else 12
+last_year = today.year-1 if last_month == 12 else today.year
+
 last_search = {
-    'startdate': '{0}-{1}-{2}'.format(today.year, today.month, '1'),
-    'enddate': '{0}-{1}-{2}'.format(today.year, today.month, calendar.monthrange(today.year, today.month)[1])
+    'startdate': '{0}-{1:0>2}-{2:0>2}'.format(last_year, last_month, '1'),
+    'enddate': '{0}-{1:0>2}-{2:0>2}'.format(last_year, last_month, calendar.monthrange(last_year, last_month)[1])
 }
+
+
 time_list = []
 total_hours = 0
 
-# secret_key is used for flash messages
-app.config.update(dict(
-    SECRET_KEY='development key'
-))
+
+# decorator used to secure Flask routes
+def authenticated_resource(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if jira_handle.isAuth():
+            return f(*args, **kwargs)
+        else:
+            session["wants_url"] = request.url
+            return redirect(url_for('login'))
+    return decorated
 
 
 @app.route('/issues/csv/', methods=['GET'])
+@authenticated_resource
 def issuescsv():
     csv_list = []
 
@@ -68,6 +89,7 @@ def issuescsv():
 
 @app.route('/')
 @app.route('/issues/', methods=['GET', 'POST'])
+@authenticated_resource
 def issues():
     global time_list
     global last_search
@@ -79,7 +101,7 @@ def issues():
         logging.debug('search:' + str(search))
 
         last_search = search
-        time_list, total_hours = HrsGet('ABC', search['startdate'], search['enddate'])
+        time_list, total_hours = jira_handle.HrsGet('ABC', search['startdate'], search['enddate'])
 
     # make unique on epickey
     epic_list = list({v['epickey']: v for v in time_list if v['epickey']
@@ -96,6 +118,7 @@ def issues():
 
 
 @app.route('/story/<id>')
+@authenticated_resource
 def story(id=None):
     if id == 'None':
         id = None
@@ -103,6 +126,7 @@ def story(id=None):
 
 
 @app.route('/epic/<id>')
+@authenticated_resource
 def epic(id=None):
     if id == 'None':
         id = None
@@ -114,25 +138,17 @@ def epic(id=None):
 def login():
     error = None
     if request.method == 'POST':
-        if request.form['username'] != 'admin' or request.form['password'] != 'admin':
-            error = 'Invalid Credentials. Please try again.'
-        else:
+        if jira_handle.auth(session, (request.form['username'], request.form['password'])):
             return redirect(url_for('issues'))
+        else:
+            error = 'Invalid Credentials. Please try again.'
     return render_template('login.html', error=error)
 
 
 @app.route('/logout')
 def logout():
-
-    error = None
-
-    if request.method == 'POST':
-        if request.form['username'] != 'admin' or request.form['password'] != 'admin':
-            error = 'Invalid Credentials. Please try again.'
-        else:
-            return redirect(url_for('issues'))
-    return render_template('login.html', error=error)
-
+    jira_handle.logout(session)
+    return redirect(url_for('issues'))
 
 
 if __name__ == '__main__':
