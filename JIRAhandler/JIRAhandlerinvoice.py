@@ -2,7 +2,6 @@ from flask import json
 from timeit import default_timer as timer
 import logging
 import json
-# import JIRAhandler
 from JIRAhandler import JIRAhandler
 
 

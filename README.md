@@ -1,5 +1,33 @@
-# JIRA Project Invoice
-Present data that would be included in an invoice for a specific JIRA project over the given date range.  Hours are read from Tempo.  Work description and grouping comes from Jira.
+# JIRA Invoice
+Tempo time data and JIRA work data for the selected time frame are summarized to either the Epic or the Story/Bug level (depending on data).
+Hours may be entered on Sub-Tasks, Stories or Epics.
+The exported csv can easily be used to create a final format invoice.
 
-Hours may be entered on Sub-Tasks, Stories or Epics.  Total hours for any object at any level are summarized correctly from all children entries.
+## Getting Started
 
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+
+### Prerequisites
+You need Python 3.4 or later to run JIRAProjectInvoice.  You can have multiple Python
+versions (2.x and 3.x) installed on the same system without problems.
+
+In Ubuntu, Mint and Debian you can install Python 3 like this:
+
+```
+$ sudo apt-get install python3 python3-pip
+
+```
+
+### Installing
+
+A step by step series of examples that tell you have to get a development env running
+
+Say what the step will be
+
+```
+$ git clone https://github.com/ronjohn4/JIRAinvoice  
+$ cd JIRAinvoice
+$ python setup.py install
+```
+
+End with an example of getting some data out of the system or using it for a little demo
