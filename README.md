@@ -20,14 +20,10 @@ $ sudo apt-get install python3 python3-pip
 
 ### Installing
 
-A step by step series of examples that tell you have to get a development env running
-
-Say what the step will be
+The steps below will clone a copy of the code to your local machne and setup any dependencies.
 
 ```
 $ git clone https://github.com/ronjohn4/JIRAinvoice  
 $ cd JIRAinvoice
 $ python setup.py install
 ```
-
-End with an example of getting some data out of the system or using it for a little demo
