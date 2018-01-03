@@ -2,10 +2,11 @@ from flask import json
 from timeit import default_timer as timer
 import logging
 import json
+# import JIRAhandler
 from JIRAhandler import JIRAhandler
 
 
-class JIRAhandlerinvoice(JIRAhandler):
+class JIRAhandlerinvoice(JIRAhandler.JIRAhandler):
     """JIRAhandlerinvoice returns combine JIRA and Tempo data detail and summarized by Epic.
 
     JIRAhandlerinvoice subclasses JIRAhandler that manages JIRA authentication and session.

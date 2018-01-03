@@ -1,7 +1,3 @@
 /.idea
-/.Python
-/pip-selfcheck.json
-/lib
-/include
-/bin
-__pycahche__
+__pycache__
+/venv

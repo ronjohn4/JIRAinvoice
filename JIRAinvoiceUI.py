@@ -3,19 +3,20 @@
 
 # todo - link to Jira using an icon next to the Jira ID
 
-from flask import Flask, render_template, flash, request, make_response, redirect, url_for, session
+from flask import Flask, render_template, request, make_response, redirect, url_for, session
 import io
 from functools import wraps
 import csv
 import logging
 from datetime import datetime
 import calendar
-from JIRAhandlerinvoice import JIRAhandlerinvoice
+from JIRAhandler import JIRAhandlerinvoice
+
 
 JIRA_BASE_URL = 'https://levelsbeyond.atlassian.net'
 
 app = Flask('JIRAinvoice')
-jira_handle = JIRAhandlerinvoice(JIRA_BASE_URL)
+jira_handle = JIRAhandlerinvoice.JIRAhandlerinvoice(JIRA_BASE_URL)
 
 # secret_key is used for flash messages
 app.config.update(dict(

@@ -1,5 +1,6 @@
 import requests
 
+
 class JIRAhandler():
     _JiraSession = None
     _JiraBaseUrl = None
