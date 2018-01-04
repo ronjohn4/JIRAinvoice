@@ -35,4 +35,5 @@ The command below will start up JIRAinvoice in your default webserver on port 50
 $ python JIRAinvoice.py
 ```
 
+The address where the app is running will be displayed on the command line.  Simply navigate to this address in your browser.
 Use a CTRL+C to stop the app.
