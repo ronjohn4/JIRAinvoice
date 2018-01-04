@@ -8,10 +8,7 @@ The exported csv can easily be used to create a final format invoice.
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisites
-You need Python 3.4 or later to run JIRAProjectInvoice.  You can have multiple Python
-versions (2.x and 3.x) installed on the same system without problems.
-
-In Ubuntu, Mint and Debian you can install Python 3 like this:
+You need Python 3.4 or later to run JIRAInvoice and the latest version of virtualenv to create the runtime environment.  
 
 ```
 $ sudo apt-get install python3 python3-pip
@@ -20,10 +17,22 @@ $ sudo apt-get install python3 python3-pip
 
 ### Installing
 
-The steps below will clone a copy of the code to your local machne and setup any dependencies.
+The steps below will clone a copy of the code to your local machine, create a virtual environment and setup any dependencies.
 
 ```
 $ git clone https://github.com/ronjohn4/JIRAinvoice  
+$ virtualenv JIRAinvoice --python=python3
 $ cd JIRAinvoice
-$ python setup.py install
+$ source ./bin/activate
+(JIRAinvoice)$ python setup.py install
 ```
+
+### Running
+
+The command below will start up JIRAinvoice in your default webserver on port 5002 (this can be changed in the code).
+
+```
+$ python JIRAinvoice.py
+```
+
+Use a CTRL+C to stop the app.
