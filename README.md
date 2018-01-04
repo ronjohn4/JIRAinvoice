@@ -5,13 +5,13 @@ The exported csv can easily be used to create a final format invoice.
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
-
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 ### Prerequisites
 You need Python 3.4 or later to run JIRAInvoice and the latest version of virtualenv to create the runtime environment.  
 
 ```
 $ sudo apt-get install python3 python3-pip
+$ sudo pip install virtualenv
 
 ```
 
